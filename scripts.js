@@ -6,7 +6,9 @@
     [x] Colocar as receitas na Tela
     [x] Saber quando o usúario clicou na receita
     [x] Buscar informações da receita individual na API
-    [] Colocar a receita individual na tela
+    [x] Colocar a receita individual na tela
+
+    TRY / CATCH
 */
 
 const form = document.querySelector('.search-form')
@@ -21,11 +23,17 @@ form.addEventListener('submit', function (event) {
 })
 
 async function searchRecipes(ingredient) {
-    const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`,
-    )
-    const data = await response.json()
-    showRecipes(data.meals)
+    recipeList.innerHTML = `<p>Carregando Receitas...</p>`
+    try {
+        const response = await fetch(
+            `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`,
+        )
+        const data = await response.json()
+        showRecipes(data.meals)
+    } catch(err){
+        recipeList.innerHTML = `<p>Nenhuma receita encontrada</p>`
+    }
+
 }
 
 function showRecipes(recipes) {
